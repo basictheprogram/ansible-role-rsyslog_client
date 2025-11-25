@@ -1,6 +1,6 @@
-#SPDX-License-Identifier: MIT-0
 ---
-- hosts: localhost
+- name: Test rsyslog client role
+  hosts: localhost
   remote_user: root
   roles:
     - realtime.rsyslog_client

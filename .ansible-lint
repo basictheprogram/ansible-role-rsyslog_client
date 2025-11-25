@@ -1,0 +1,14 @@
+---
+exclude_paths:
+  - ~/.ansible
+  - .gitlab-ci.yml
+  - .pre-commit-config.yaml
+  - .cache/
+  - .github/
+  - .ansible/
+
+skip_list:
+  - "skip_this_tag"
+  - "git-latest"
+  - "var-naming"
+  - "package-latest"

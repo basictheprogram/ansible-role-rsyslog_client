@@ -1,0 +1,30 @@
+---
+- name: Notify if rsyslog receiver
+  ansible.builtin.debug:
+    msg: "This host is a rsyslog receiver, skipping client setup."
+  when: rsyslog_receiver
+  tags: rsyslog_client
+
+- name: Clean up /etc/rsyslog.d/
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/rsyslog.d/01-gnutls.conf
+    - /etc/rsyslog.d/90-remote-forward.conf
+  tags: rsyslog_client
+
+- name: Configure rsyslog client
+  when: not rsyslog_receiver
+  tags: rsyslog_client
+  block:
+    - name: Package installation (apt)
+      ansible.builtin.apt:
+        name: "{{ rsyslog_client_packages }}"
+        state: "present"
+        install_recommends: false
+        force_apt_get: true
+
+    - name: Run robertdebock.rsyslog
+      ansible.builtin.import_role:
+        name: robertdebock.rsyslog
