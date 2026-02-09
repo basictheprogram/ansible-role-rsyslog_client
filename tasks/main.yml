@@ -1,5 +1,29 @@
 ---
+- name: Gather OS specific variables
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_facts['distribution_release'] }}.yml"
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - "{{ ansible_facts['os_family'] }}.yml"
+        - "main.yml"
+      paths:
+        - "defaults"
+  tags: rsyslog_client
+
+- name: Notify if rsyslog receiver
+  ansible.builtin.debug:
+    msg: "This host is a rsyslog receiver, skipping client setup."
+  when: rsyslog_receiver
+  tags: rsyslog_client
+
 - name: Import_tasks debian.yml
-  ansible.builtin.import_tasks: debian.yml
+  ansible.builtin.include_tasks: debian.yml
   when: ansible_facts['os_family'] == 'Debian'
-  tags: updates
+  tags: rsyslog_client
+
+- name: Import_tasks redhat.yml
+  ansible.builtin.include_tasks: redhat.yml
+  when: ansible_facts['os_family'] == 'RedHat'
+  tags: rsyslog_client

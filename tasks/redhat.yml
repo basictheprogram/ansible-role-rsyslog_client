@@ -1,0 +1,13 @@
+---
+- name: Configure rsyslog client
+  when: not rsyslog_receiver
+  tags: rsyslog_client
+  block:
+    - name: Package installation (dnf)
+      ansible.builtin.dnf:
+        name: "{{ rsyslog_client_packages }}"
+        state: "present"
+
+    - name: Run robertdebock.rsyslog
+      ansible.builtin.import_role:
+        name: robertdebock.rsyslog

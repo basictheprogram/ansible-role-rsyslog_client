@@ -16,7 +16,7 @@ repos:
         files: requirements.txt|\.gitignore|\.dockerignore
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         files: \.(yaml|yml)$
@@ -24,12 +24,12 @@ repos:
         entry: yamllint --strict -f parsable
 
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.29.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.6
+    rev: v0.15.0
     hooks:
       - id: ruff
         name: Ruff check
@@ -51,7 +51,7 @@ repos:
         entry: hadolint
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v25.11.1
+    rev: v26.1.1
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
@@ -59,5 +59,21 @@ repos:
         description: Run configurations on .ansible-lint file
         verbose: false
 
-ci:
-  autoupdate_schedule: weekly
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      # - id: bundler-audit
+      # - id: check-mailmap
+      # - id: fasterer
+      # - id: forbid-binary
+      # - id: forbid-space-in-indent
+      # - id: git-check  # Configure in .gitattributes
+      # - id: git-dirty  # Configure in .gitignore
+      # - id: markdownlint # Configure in .mdlrc
+      # - id: reek
+      # - id: require-ascii
+      # - id: rubocop
+      # - id: script-must-have-extension
+      # - id: script-must-not-have-extension
+      - id: shellcheck
+      - id: shfmt

@@ -1,10 +1,4 @@
 ---
-- name: Notify if rsyslog receiver
-  ansible.builtin.debug:
-    msg: "This host is a rsyslog receiver, skipping client setup."
-  when: rsyslog_receiver
-  tags: rsyslog_client
-
 - name: Clean up /etc/rsyslog.d/
   ansible.builtin.file:
     path: "{{ item }}"

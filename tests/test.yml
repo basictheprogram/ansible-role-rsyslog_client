@@ -1,6 +1,0 @@
----
-- name: Test rsyslog client role
-  hosts: localhost
-  remote_user: root
-  roles:
-    - realtime.rsyslog_client
