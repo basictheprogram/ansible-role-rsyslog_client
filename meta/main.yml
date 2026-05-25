@@ -5,22 +5,27 @@ galaxy_info:
   namespace: realtime
   role_name: rsyslog_client
   author: "Bob Tanner"
-  description: rsyslog_client
+  description: >-
+    Configures rsyslog as a log-forwarding client on Debian/Ubuntu and
+    RHEL/EL 9 hosts. Installs platform-appropriate packages via apt or
+    dnf, removes legacy /etc/rsyslog.d/ configuration fragments left by
+    previous deployments, and delegates the rsyslog configuration itself
+    to the robertdebock.rsyslog role
+    (https://github.com/robertdebock/ansible-role-rsyslog, author Robert
+    de Bock). Set rsyslog_receiver: true on hosts that should receive
+    logs rather than forward them — client setup is skipped entirely on
+    those hosts.
   company: "Real Time Enterprises, Inc."
   license: MIT
-  min_ansible_version: "2.12"
+  min_ansible_version: "2.20"
   platforms:
     - name: Ubuntu
       versions:
-        - trusty
-        - xenial
-        - bionic
-        - focal
         - jammy
         - noble
+        - resolute
     - name: Debian
       versions:
-        - bullseye
         - bookworm
         - trixie
     - name: EL

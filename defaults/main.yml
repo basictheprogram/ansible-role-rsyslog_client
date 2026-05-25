@@ -1,3 +1,5 @@
 ---
 rsyslog_client_packages:
   - rsyslog
+
+rsyslog_receiver: false

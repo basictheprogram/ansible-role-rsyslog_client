@@ -1,0 +1,32 @@
+---
+- name: Preflight — assert OS family is supported
+  ansible.builtin.assert:
+    that:
+      - ansible_facts['os_family'] in ['Debian', 'RedHat']
+    fail_msg: >-
+      Unsupported OS family '{{ ansible_facts['os_family'] }}'.
+      This role supports Debian and RedHat families only.
+    quiet: true
+  tags: rsyslog_client
+
+- name: Preflight — assert rsyslog_receiver is boolean
+  ansible.builtin.assert:
+    that:
+      - rsyslog_receiver is boolean
+    fail_msg: >-
+      rsyslog_receiver must be a boolean (true/false).
+      Got: {{ rsyslog_receiver }} ({{ rsyslog_receiver | type_debug }}).
+    quiet: true
+  tags: rsyslog_client
+
+- name: Preflight — assert rsyslog_client_packages is a non-empty list
+  ansible.builtin.assert:
+    that:
+      - rsyslog_client_packages is sequence
+      - rsyslog_client_packages is not string
+      - rsyslog_client_packages | length > 0
+    fail_msg: >-
+      rsyslog_client_packages must be a non-empty list of package names.
+      Got: {{ rsyslog_client_packages }}.
+    quiet: true
+  tags: rsyslog_client

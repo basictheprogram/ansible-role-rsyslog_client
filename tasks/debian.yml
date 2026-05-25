@@ -6,6 +6,7 @@
   loop:
     - /etc/rsyslog.d/01-gnutls.conf
     - /etc/rsyslog.d/90-remote-forward.conf
+    - /etc/rsyslog.d/forwarding.conf
   tags: rsyslog_client
 
 - name: Configure rsyslog client

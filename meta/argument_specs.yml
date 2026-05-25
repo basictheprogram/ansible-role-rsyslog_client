@@ -1,0 +1,30 @@
+---
+argument_specs:
+  main:
+    short_description: Configure rsyslog as a log-forwarding client
+    description:
+      - Installs rsyslog packages appropriate for the host OS family (apt
+        on Debian/Ubuntu, dnf on EL), removes legacy /etc/rsyslog.d/
+        configuration fragments, and delegates the actual rsyslog
+        configuration to the robertdebock.rsyslog role.
+      - Set rsyslog_receiver to true on hosts that receive logs rather
+        than forward them. Client setup is skipped entirely on those hosts.
+    version_added: "2.20"
+    author: "Bob Tanner"
+    options:
+      rsyslog_client_packages:
+        description:
+          - List of packages to install for rsyslog client operation.
+          - Override to add platform-specific packages or rsyslog modules
+            such as rsyslog-gnutls or rsyslog-relp.
+        type: list
+        elements: str
+        default:
+          - rsyslog
+      rsyslog_receiver:
+        description:
+          - When true, skip client configuration on this host entirely.
+          - Intended for hosts that act as centralised syslog receivers
+            rather than log forwarders.
+        type: bool
+        default: false
