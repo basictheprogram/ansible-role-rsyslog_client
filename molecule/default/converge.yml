@@ -2,5 +2,20 @@
 - name: Converge
   hosts: all
   gather_facts: true
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+      changed_when: false
+      when: ansible_os_family == 'Debian'
+
+    - name: Update dnf cache
+      ansible.builtin.dnf:
+        update_cache: true
+      changed_when: false
+      when: ansible_os_family == 'RedHat'
+
   roles:
     - role: realtime.rsyslog_client

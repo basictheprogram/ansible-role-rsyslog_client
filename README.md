@@ -79,6 +79,26 @@ ansible-galaxy role install -r requirements.yml
 
 ---
 
+## Task flow
+
+When applied to a host the role runs in this order:
+
+1. **Gather facts** — `ansible_facts` must be populated before any task runs.
+2. **Gather OS vars** — loads OS-family-specific variable overrides from `vars/`.
+3. **Notify receiver** — prints a debug message and short-circuits client setup
+   when `rsyslog_receiver: true`.
+4. **Preflight assertions** — fails fast if:
+   - ansible-core version is below 2.20
+   - OS family is not Debian or RedHat
+   - `rsyslog_receiver` is not a boolean
+   - `rsyslog_client_packages` is empty or not a list
+5. **OS-specific setup** (skipped when `rsyslog_receiver: true`):
+   - Debian: removes legacy `/etc/rsyslog.d/` fragments, installs packages
+     via `apt`, delegates to `robertdebock.rsyslog`.
+   - RedHat: installs packages via `dnf`, delegates to `robertdebock.rsyslog`.
+
+---
+
 ## Example playbook
 
 ```yaml
@@ -110,7 +130,7 @@ ansible-galaxy role install -r requirements.yml
 |----------|----------------------------|
 | Ubuntu   | jammy, noble, resolute     |
 | Debian   | bookworm, trixie           |
-| EL       | 9                          |
+| EL       | 9, 10                      |
 
 ---
 

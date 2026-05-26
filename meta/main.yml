@@ -7,7 +7,7 @@ galaxy_info:
   author: "Bob Tanner"
   description: >-
     Configures rsyslog as a log-forwarding client on Debian/Ubuntu and
-    RHEL/EL 9 hosts. Installs platform-appropriate packages via apt or
+    RHEL/EL 9–10 hosts. Installs platform-appropriate packages via apt or
     dnf, removes legacy /etc/rsyslog.d/ configuration fragments left by
     previous deployments, and delegates the rsyslog configuration itself
     to the robertdebock.rsyslog role
@@ -31,8 +31,14 @@ galaxy_info:
     - name: EL
       versions:
         - "9"
+        - "10"
   galaxy_tags:
     - debian
+    - el
+    - forwarding
     - linux
-    - ubuntu
+    - logging
+    - redhat
     - rsyslog
+    - syslog
+    - ubuntu

@@ -1,4 +1,14 @@
 ---
+- name: Preflight — assert Ansible version is sufficient
+  ansible.builtin.assert:
+    that:
+      - ansible_version.full is version('2.20', '>=')
+    fail_msg: >-
+      realtime.rsyslog_client requires ansible-core >= 2.20.
+      Current version: {{ ansible_version.full }}.
+    quiet: true
+  tags: rsyslog_client
+
 - name: Preflight — assert OS family is supported
   ansible.builtin.assert:
     that:

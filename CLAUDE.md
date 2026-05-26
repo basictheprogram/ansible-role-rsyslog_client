@@ -168,8 +168,7 @@ commit. Stop and verify between items.
    `meta/dependencies`.
 5. Investigate whether legacy cleanup should apply to RedHat family and
    resolve the open question above before touching molecule.
-6. Wire up `molecule/default/molecule.yml` — add platform definitions
-   (Ubuntu jammy, Debian bookworm, EL 9 at minimum).
+6. ~~Wire up `molecule/default/molecule.yml`~~ — done.
 7. Implement `molecule/default/converge.yml` — replace stub with a real
    play that sets required variables and applies the role.
 8. Add `molecule/default/verify.yml` — assert rsyslog is installed,
