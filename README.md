@@ -6,8 +6,8 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen.svg?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Ansible Core](https://img.shields.io/badge/ansible--core-%3E%3D2.20-blue.svg)](https://docs.ansible.com/ansible/latest/index.html)
 
-Ansible role that configures rsyslog as a log-forwarding client on
-Debian/Ubuntu and RHEL/EL 9 hosts.
+Ansible role that configures rsyslog as a log-forwarding client, for
+Ubuntu (jammy, noble, resolute), Debian (trixie), and EL (9, 10).
 
 The role handles OS-specific package installation (apt on Debian/Ubuntu,
 dnf on EL), removes legacy `/etc/rsyslog.d/` configuration fragments
@@ -83,16 +83,16 @@ ansible-galaxy role install -r requirements.yml
 
 When applied to a host the role runs in this order:
 
-1. **Gather facts** — `ansible_facts` must be populated before any task runs.
-2. **Gather OS vars** — loads OS-family-specific variable overrides from `vars/`.
-3. **Notify receiver** — prints a debug message and short-circuits client setup
-   when `rsyslog_receiver: true`.
-4. **Preflight assertions** — fails fast if:
+1. **Preflight assertions** — runs first, before any other task. Fails
+   fast if:
    - ansible-core version is below 2.20
    - OS family is not Debian or RedHat
    - `rsyslog_receiver` is not a boolean
    - `rsyslog_client_packages` is empty or not a list
-5. **OS-specific setup** (skipped when `rsyslog_receiver: true`):
+2. **Gather OS vars** — loads OS-family-specific variable overrides from `vars/`.
+3. **Notify receiver** — prints a debug message and short-circuits client setup
+   when `rsyslog_receiver: true`.
+4. **OS-specific setup** (skipped when `rsyslog_receiver: true`):
    - Debian: removes legacy `/etc/rsyslog.d/` fragments, installs packages
      via `apt`, delegates to `robertdebock.rsyslog`.
    - RedHat: installs packages via `dnf`, delegates to `robertdebock.rsyslog`.
@@ -129,7 +129,7 @@ When applied to a host the role runs in this order:
 | Platform | Versions                   |
 |----------|----------------------------|
 | Ubuntu   | jammy, noble, resolute     |
-| Debian   | bookworm, trixie           |
+| Debian   | trixie                     |
 | EL       | 9, 10                      |
 
 ---
@@ -142,7 +142,7 @@ MIT
 
 ## Author
 
-Bob Tanner — Real Time Enterprises, Inc.
+Bob Tanner
 
 This role is a wrapper around
 [robertdebock.rsyslog](https://github.com/robertdebock/ansible-role-rsyslog)

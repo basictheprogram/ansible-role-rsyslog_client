@@ -9,13 +9,13 @@
         cache_valid_time: 3600
         force_apt_get: true
       changed_when: false
-      when: ansible_os_family == 'Debian'
+      when: ansible_facts.os_family == 'Debian'
 
     - name: Update dnf cache
       ansible.builtin.dnf:
         update_cache: true
       changed_when: false
-      when: ansible_os_family == 'RedHat'
+      when: ansible_facts.os_family == 'RedHat'
 
   roles:
     - role: realtime.rsyslog_client

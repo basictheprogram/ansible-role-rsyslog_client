@@ -1,10 +1,14 @@
 # Claude Code project notes — rsyslog_client
 
-Ansible role that configures rsyslog as a log-forwarding client. Wraps
-`robertdebock.rsyslog` and handles OS-specific package installation (apt
-on Debian/Ubuntu, dnf on EL 9). Also cleans up legacy `/etc/rsyslog.d/`
-fragments before delegating configuration. Skips client setup when
-`rsyslog_receiver: true` is set on a host.
+Configures rsyslog as a log-forwarding client on Debian/Ubuntu and
+RHEL/EL 9–10 hosts. Installs platform-appropriate packages via apt or
+dnf, removes legacy `/etc/rsyslog.d/` configuration fragments left by
+previous deployments, and delegates the rsyslog configuration itself to
+the `robertdebock.rsyslog` role
+(https://github.com/robertdebock/ansible-role-rsyslog, author Robert de
+Bock). Set `rsyslog_receiver: true` on hosts that should receive logs
+rather than forward them — client setup is skipped entirely on those
+hosts.
 
 ---
 
@@ -167,13 +171,15 @@ commit. Stop and verify between items.
    `rsyslog_receiver` should be set, and why it is not in
    `meta/dependencies`.
 5. Investigate whether legacy cleanup should apply to RedHat family and
-   resolve the open question above before touching molecule.
-6. ~~Wire up `molecule/default/molecule.yml`~~ — done.
-7. Implement `molecule/default/converge.yml` — replace stub with a real
-   play that sets required variables and applies the role.
-8. Add `molecule/default/verify.yml` — assert rsyslog is installed,
-   enabled, and the expected `/etc/rsyslog.d/` fragments are present or
-   absent as appropriate.
+   resolve the open question above before touching molecule further.
+6. ~~Wire up `molecule/default/molecule.yml`~~ — done; covers all seven
+   platforms (jammy, noble, resolute, bookworm, trixie, el9, el10).
+7. ~~Implement `molecule/default/converge.yml`~~ — done; a real play that
+   updates the apt/dnf cache and applies the role.
+8. ~~Add testinfra verification~~ — done; `molecule/default/tests/`
+   covers packages, service, rendered config, and legacy-fragment
+   cleanup. (Testinfra has no separate `verify.yml` to author — it
+   auto-discovers `tests/*.py` directly.)
 9. Add OS-specific vars files under `vars/` if investigation in step 5
    or upstream `robertdebock.rsyslog` docs show they are needed.
 
